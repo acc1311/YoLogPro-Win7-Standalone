@@ -387,18 +387,68 @@ DEFAULT_CFG = {
     "lang":"ro","manual_dt":False,"sounds":True,
     "op_name":"","power":"100","win_geo":"",
     "email":"","soapbox":"73 GL",
-    "cab2_exch_sent":"none","cab2_exch_rcvd":"log"
+    "cab2_exch_sent":"none","cab2_exch_rcvd":"log",
+    "theme":"Dark Blue (implicit)"
 }
 
-TH = {
-    "bg":"#0d1117","fg":"#e6edf3","accent":"#1f6feb",
-    "entry_bg":"#161b22","header_bg":"#010409",
-    "btn_bg":"#21262d","btn_fg":"#f0f6fc",
-    "led_on":"#3fb950","led_off":"#f85149",
-    "warn":"#d29922","ok":"#3fb950","err":"#f85149",
-    "dup_bg":"#3d1a1a","mult_bg":"#1a3d1a","spec_bg":"#1a1a3d",
-    "alt":"#0d1f2d","gold":"#ffd700","cyan":"#58a6ff"
+THEMES = {
+    "Dark Blue (implicit)": {
+        "bg":"#0d1117","fg":"#e6edf3","accent":"#1f6feb",
+        "entry_bg":"#161b22","header_bg":"#010409",
+        "btn_bg":"#21262d","btn_fg":"#f0f6fc",
+        "led_on":"#3fb950","led_off":"#f85149",
+        "warn":"#d29922","ok":"#3fb950","err":"#f85149",
+        "dup_bg":"#3d1a1a","mult_bg":"#1a3d1a","spec_bg":"#1a1a3d",
+        "alt":"#0d1f2d","gold":"#ffd700","cyan":"#58a6ff"
+    },
+    "Dark Green": {
+        "bg":"#0a0f0a","fg":"#d0f0d0","accent":"#00aa44",
+        "entry_bg":"#0f1a0f","header_bg":"#050a05",
+        "btn_bg":"#1a2e1a","btn_fg":"#d0f0d0",
+        "led_on":"#00ff66","led_off":"#ff4444",
+        "warn":"#ccaa00","ok":"#00cc44","err":"#ff4444",
+        "dup_bg":"#3d1a1a","mult_bg":"#1a3d1a","spec_bg":"#1a2a3d",
+        "alt":"#0f200f","gold":"#aaff44","cyan":"#44ffaa"
+    },
+    "Dark Red": {
+        "bg":"#0f0a0a","fg":"#f0d0d0","accent":"#cc2200",
+        "entry_bg":"#1a0f0f","header_bg":"#0a0505",
+        "btn_bg":"#2e1a1a","btn_fg":"#f0d0d0",
+        "led_on":"#ff6644","led_off":"#888888",
+        "warn":"#ff9900","ok":"#ff6600","err":"#ff2200",
+        "dup_bg":"#3d1010","mult_bg":"#1a2a1a","spec_bg":"#1a1a3d",
+        "alt":"#200f0f","gold":"#ffaa44","cyan":"#ff8844"
+    },
+    "Dark Purple": {
+        "bg":"#0d0a14","fg":"#e0d0f0","accent":"#7c3aed",
+        "entry_bg":"#160f22","header_bg":"#08050f",
+        "btn_bg":"#221a30","btn_fg":"#e0d0f0",
+        "led_on":"#a855f7","led_off":"#f85149",
+        "warn":"#d29922","ok":"#a855f7","err":"#f85149",
+        "dup_bg":"#3d1a2a","mult_bg":"#1a1a3d","spec_bg":"#2a1a3d",
+        "alt":"#150a20","gold":"#d4a0ff","cyan":"#a78bfa"
+    },
+    "Light (Zi)": {
+        "bg":"#f0f4f8","fg":"#1a1a2e","accent":"#1565c0",
+        "entry_bg":"#ffffff","header_bg":"#dce8f5",
+        "btn_bg":"#90a4ae","btn_fg":"#ffffff",
+        "led_on":"#2e7d32","led_off":"#c62828",
+        "warn":"#e65100","ok":"#2e7d32","err":"#c62828",
+        "dup_bg":"#ffcdd2","mult_bg":"#c8e6c9","spec_bg":"#e3f2fd",
+        "alt":"#e8f0f8","gold":"#e65100","cyan":"#0277bd"
+    },
+    "Light Sepia": {
+        "bg":"#f5f0e8","fg":"#2c1a00","accent":"#8b4513",
+        "entry_bg":"#fffdf5","header_bg":"#e8dcc8",
+        "btn_bg":"#b8956a","btn_fg":"#ffffff",
+        "led_on":"#4a7c2f","led_off":"#c0392b",
+        "warn":"#e67e22","ok":"#4a7c2f","err":"#c0392b",
+        "dup_bg":"#f5c6cb","mult_bg":"#c3e6cb","spec_bg":"#d4edda",
+        "alt":"#ede8dc","gold":"#8b4513","cyan":"#5c6bc0"
+    },
 }
+
+TH = dict(THEMES["Dark Blue (implicit)"])
 
 class DM:
     @staticmethod
@@ -978,6 +1028,189 @@ class PreviewDialog(tk.Toplevel):
         center_dialog(self,parent)
     def _on_save(self): self._save_cb(self._content); self.destroy()
 
+
+class NewLogDialog(tk.Toplevel):
+    """Dialog pentru crearea unui log nou cu nume personalizat."""
+    def __init__(self, parent, contests):
+        super().__init__(parent)
+        self.result = None
+        self.contests = contests
+        self.title("📝 Log Nou / New Log")
+        self.geometry("420x280")
+        self.configure(bg=TH["bg"])
+        self.transient(parent)
+        self.grab_set()
+        lo = {"bg":TH["bg"],"fg":TH["fg"],"font":("Consolas",11)}
+        eo = {"bg":TH["entry_bg"],"fg":TH["fg"],"font":("Consolas",11),"insertbackground":TH["fg"]}
+
+        tk.Label(self, text="📝 Creare Log Nou / New Log", bg=TH["bg"], fg=TH["gold"],
+                 font=("Consolas",13,"bold")).pack(pady=(14,8))
+
+        # Concurs
+        tk.Label(self, text="Concurs / Contest:", **lo).pack(anchor="w", padx=20)
+        self._cid_v = tk.StringVar(value=list(contests.keys())[0])
+        ttk.Combobox(self, textvariable=self._cid_v, values=list(contests.keys()),
+                     state="readonly", width=28, font=("Consolas",11)).pack(padx=20, pady=4, anchor="w")
+
+        # Nume log
+        tk.Label(self, text="Nume log (opțional) / Log name (optional):", **lo).pack(anchor="w", padx=20)
+        self._name_e = tk.Entry(self, width=30, **eo)
+        self._name_e.insert(0, datetime.datetime.now().strftime("%Y%m%d"))
+        self._name_e.pack(padx=20, pady=4, anchor="w")
+
+        tk.Label(self, text="⚠ Logul curent va fi salvat automat! / Current log will be auto-saved!",
+                 bg=TH["bg"], fg=TH["warn"], font=("Consolas",9)).pack(pady=6)
+
+        bf = tk.Frame(self, bg=TH["bg"]); bf.pack(pady=8)
+        tk.Button(bf, text="✅ Crează / Create", command=self._ok,
+                  bg=TH["ok"], fg="white", font=("Consolas",11,"bold"), width=16).pack(side="left", padx=6)
+        tk.Button(bf, text="✖ Anulează / Cancel", command=self.destroy,
+                  bg=TH["btn_bg"], fg="white", font=("Consolas",11), width=16).pack(side="left", padx=6)
+        center_dialog(self, parent)
+
+    def _ok(self):
+        cid = self._cid_v.get().strip()
+        name = re.sub(r"[^a-zA-Z0-9_-]", "_", self._name_e.get().strip()) or datetime.datetime.now().strftime("%Y%m%d_%H%M")
+        log_id = f"{cid}__{name}"
+        self.result = {"contest": cid, "log_id": log_id}
+        self.destroy()
+
+
+class ThemeDialog(tk.Toplevel):
+    """Dialog pentru selectarea și personalizarea temei de culori."""
+    def __init__(self, parent, current_theme, custom_colors):
+        super().__init__(parent)
+        self.result = None
+        self.current_theme = current_theme
+        self.custom = dict(custom_colors)  # culorile custom curente
+        self.title("🎨 Teme și Culori / Themes & Colors")
+        self.geometry("620x560")
+        self.configure(bg=TH["bg"])
+        self.transient(parent)
+        self.grab_set()
+        self._build()
+        center_dialog(self, parent)
+
+    def _build(self):
+        lo = {"bg":TH["bg"],"fg":TH["fg"],"font":("Consolas",11)}
+
+        tk.Label(self, text="🎨 Teme / Themes", bg=TH["bg"], fg=TH["gold"],
+                 font=("Consolas",13,"bold")).pack(pady=(12,4))
+
+        # Selector teme predefinite
+        tf = tk.Frame(self, bg=TH["bg"]); tf.pack(fill="x", padx=20, pady=4)
+        tk.Label(tf, text="Temă predefinită / Preset theme:", **lo).pack(side="left")
+        self._theme_v = tk.StringVar(value=self.current_theme)
+        tcb = ttk.Combobox(tf, textvariable=self._theme_v, values=list(THEMES.keys()),
+                           state="readonly", width=22, font=("Consolas",11))
+        tcb.pack(side="left", padx=8)
+        tk.Button(tf, text="↺ Aplică / Apply", command=self._apply_preset,
+                  bg=TH["accent"], fg="white", font=("Consolas",10), width=14).pack(side="left", padx=4)
+
+        # Preview
+        self._prev_frame = tk.Frame(self, bg=TH["bg"], bd=1, relief="solid"); self._prev_frame.pack(fill="x", padx=20, pady=6)
+        self._draw_preview(self.custom if self.custom else THEMES.get(self.current_theme, TH))
+
+        # Editor culori custom
+        sep = tk.Frame(self, bg=TH["warn"], height=1); sep.pack(fill="x", padx=20, pady=4)
+        tk.Label(self, text="✏ Personalizare culori / Custom colors:", bg=TH["bg"], fg=TH["cyan"],
+                 font=("Consolas",11,"bold")).pack(anchor="w", padx=20)
+
+        cf = tk.Frame(self, bg=TH["bg"]); cf.pack(fill="both", expand=True, padx=20, pady=4)
+        self._color_entries = {}
+        color_labels = {
+            "bg": "Fundal / Background",
+            "fg": "Text / Foreground",
+            "accent": "Accent (butoane)",
+            "entry_bg": "Câmpuri / Entry bg",
+            "header_bg": "Header",
+            "gold": "Clock / Score",
+            "ok": "OK / Verde",
+            "err": "Eroare / Roșu",
+            "warn": "Avertisment / Galben",
+        }
+        base = self.custom if self.custom else THEMES.get(self.current_theme, TH)
+        for i, (k, lbl) in enumerate(color_labels.items()):
+            r, c = divmod(i, 3)
+            fr = tk.Frame(cf, bg=TH["bg"]); fr.grid(row=r, column=c, padx=6, pady=3, sticky="w")
+            tk.Label(fr, text=lbl, bg=TH["bg"], fg=TH["fg"], font=("Consolas",9)).pack(anchor="w")
+            ef = tk.Frame(fr, bg=TH["bg"]); ef.pack(fill="x")
+            e = tk.Entry(ef, width=9, bg=TH["entry_bg"], fg=TH["fg"],
+                         font=("Consolas",10), insertbackground=TH["fg"], justify="center")
+            e.insert(0, base.get(k, "#ffffff"))
+            e.pack(side="left")
+            swatch = tk.Label(ef, text="  ", bg=base.get(k,"#ffffff"), width=2)
+            swatch.pack(side="left", padx=2)
+            def _pick(ev, key=k, entry=e, sw=swatch):
+                from tkinter import colorchooser
+                col = colorchooser.askcolor(color=entry.get(), title=f"Alege culoarea: {key}")
+                if col and col[1]:
+                    entry.delete(0, "end"); entry.insert(0, col[1])
+                    try: sw.config(bg=col[1])
+                    except: pass
+            e.bind("<Double-Button-1>", _pick)
+            swatch.bind("<Button-1>", _pick)
+            e.bind("<FocusOut>", lambda ev, sw=swatch, en=e: self._upd_swatch(ev, sw, en))
+            self._color_entries[k] = e
+
+        # Butoane finale
+        bf = tk.Frame(self, bg=TH["bg"]); bf.pack(pady=10)
+        tk.Button(bf, text="✅ Salvează / Save", command=self._save,
+                  bg=TH["ok"], fg="white", font=("Consolas",11,"bold"), width=16).pack(side="left", padx=6)
+        tk.Button(bf, text="↺ Reset implicit", command=self._reset_default,
+                  bg=TH["warn"], fg="white", font=("Consolas",10), width=14).pack(side="left", padx=6)
+        tk.Button(bf, text="✖ Anulează", command=self.destroy,
+                  bg=TH["btn_bg"], fg="white", font=("Consolas",11), width=12).pack(side="left", padx=6)
+
+    def _upd_swatch(self, ev, swatch, entry):
+        try: swatch.config(bg=entry.get())
+        except: pass
+
+    def _draw_preview(self, colors):
+        for w in self._prev_frame.winfo_children(): w.destroy()
+        pf = tk.Frame(self._prev_frame, bg=colors.get("bg","#000"), pady=4); pf.pack(fill="x")
+        tk.Label(pf, text=" YO Log PRO — Preview ", bg=colors.get("header_bg","#000"),
+                 fg=colors.get("gold","#ffd700"), font=("Consolas",10,"bold")).pack(side="left", padx=6)
+        tk.Label(pf, text=" UTC 12:34:56 ", bg=colors.get("header_bg","#000"),
+                 fg=colors.get("gold","#ffd700"), font=("Consolas",10)).pack(side="right", padx=6)
+        rf = tk.Frame(self._prev_frame, bg=colors.get("bg","#000"), pady=2); rf.pack(fill="x", padx=6)
+        tk.Label(rf, text="Indicativ", bg=colors.get("bg","#000"), fg=colors.get("fg","#fff"),
+                 font=("Consolas",9)).pack(side="left")
+        tk.Entry(rf, width=10, bg=colors.get("entry_bg","#000"), fg=colors.get("gold","#ffd700"),
+                 font=("Consolas",10), insertbackground=colors.get("fg","#fff")).pack(side="left", padx=4)
+        tk.Button(rf, text=" LOG ", bg=colors.get("accent","#1f6feb"), fg="white",
+                  font=("Consolas",9,"bold")).pack(side="left", padx=4)
+        tk.Label(rf, text=" OK ", bg=colors.get("bg","#000"), fg=colors.get("ok","#3fb950"),
+                 font=("Consolas",9,"bold")).pack(side="left")
+        tk.Label(rf, text=" WARN ", bg=colors.get("bg","#000"), fg=colors.get("warn","#d29922"),
+                 font=("Consolas",9,"bold")).pack(side="left")
+        tk.Label(rf, text=" ERR ", bg=colors.get("bg","#000"), fg=colors.get("err","#f85149"),
+                 font=("Consolas",9,"bold")).pack(side="left")
+
+    def _apply_preset(self):
+        name = self._theme_v.get()
+        preset = THEMES.get(name, {})
+        for k, e in self._color_entries.items():
+            e.delete(0, "end"); e.insert(0, preset.get(k, TH.get(k, "#ffffff")))
+            # update swatch
+            for child in e.master.winfo_children():
+                if isinstance(child, tk.Label):
+                    try: child.config(bg=preset.get(k, TH.get(k, "#ffffff")))
+                    except: pass
+        self._draw_preview(preset)
+
+    def _reset_default(self):
+        self._theme_v.set("Dark Blue (implicit)")
+        self._apply_preset()
+
+    def _save(self):
+        colors = dict(THEMES.get(self._theme_v.get(), TH))
+        for k, e in self._color_entries.items():
+            val = e.get().strip()
+            if val.startswith("#") and len(val) in (4, 7): colors[k] = val
+        self.result = {"theme": self._theme_v.get(), "colors": colors}
+        self.destroy()
+
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -994,6 +1227,7 @@ class App(tk.Tk):
         self.log=DM.load_log(self.cfg.get("contest","simplu"))
         if not isinstance(self.log,list): self.log=[]
         L.s(self.cfg.get("lang","ro")); self.edit_idx=None; self.ent={}; self.serial=len(self.log)+1; self.undo_stack=deque(maxlen=50)
+        self._apply_theme_from_cfg()
         self.info_lbl=self.sc_lbl=self.clk=self.rate_lbl=None; self.led_c=self.led=self.st_lbl=self.wb_lbl=self.log_btn=None
         self.tree=self.ctx=self.fb_v=self.fm_v=None; self.cv=self.ccb=self.lang_v=self.man_v=self.cat_v=self.cou_v=None
         self._setup_win(); self._setup_style(); self._build_menu(); self._build_ui(); self._build_ctx(); self._refresh()
@@ -1003,8 +1237,41 @@ class App(tk.Tk):
         self.bind('<F2>',self._cycle_band); self.bind('<F3>',self._cycle_mode)
         self._tick_clock(); self._tick_save()
 
+    def _apply_theme_from_cfg(self):
+        global TH
+        custom = self.cfg.get("custom_colors", {})
+        theme_name = self.cfg.get("theme", "Dark Blue (implicit)")
+        base = dict(THEMES.get(theme_name, THEMES["Dark Blue (implicit)"]))
+        if custom:
+            base.update({k: v for k, v in custom.items() if k in base})
+        TH.update(base)
+
+    def _new_log_dlg(self):
+        DM.save_log(self._cid(), self.log)
+        d = NewLogDialog(self, self.contests)
+        self.wait_window(d)
+        if not d.result: return
+        self.cfg["contest"] = d.result["contest"]
+        self.cfg["log_id"] = d.result["log_id"]
+        DM.save("config.json", self.cfg)
+        self.log = DM.load_log(d.result["log_id"])
+        if not isinstance(self.log, list): self.log = []
+        self.serial = 1; self.undo_stack.clear(); self._rebuild()
+
+    def _theme_dlg(self):
+        current = self.cfg.get("theme", "Dark Blue (implicit)")
+        custom = self.cfg.get("custom_colors", {})
+        d = ThemeDialog(self, current, custom)
+        self.wait_window(d)
+        if not d.result: return
+        self.cfg["theme"] = d.result["theme"]
+        self.cfg["custom_colors"] = d.result["colors"]
+        DM.save("config.json", self.cfg)
+        self._apply_theme_from_cfg()
+        self._rebuild()
+
     def _cc(self): return self.contests.get(self.cfg.get("contest","simplu"),self.contests.get("simplu",{}))
-    def _cid(self): return self.cfg.get("contest","simplu")
+    def _cid(self): return self.cfg.get("log_id", self.cfg.get("contest","simplu"))
     def _sounds(self): return self.cfg.get("sounds",True) and HAS_SOUND
 
     def _setup_win(self):
@@ -1029,6 +1296,9 @@ class App(tk.Tk):
         cm.add_command(label=L.t("contest_mgr"),command=self._mgr); cm.add_separator()
         for cid,cd in self.contests.items():
             cm.add_command(label=f"⚡ {cd.get('name_'+L.g(),cd.get('name_ro',cid))}",command=lambda c=cid:self._switch_contest(c))
+        lm=tk.Menu(mb,tearoff=0); mb.add_cascade(label="📝 Log",menu=lm)
+        lm.add_command(label="📝 Log Nou / New Log",command=self._new_log_dlg)
+        lm.add_command(label="🎨 Teme / Themes",command=self._theme_dlg)
         tm=tk.Menu(mb,tearoff=0); mb.add_cascade(label=L.t("tools"),menu=tm)
         tm.add_command(label=L.t("search"),command=self._search_dlg); tm.add_command(label=L.t("timer"),command=self._timer_dlg); tm.add_separator()
         tm.add_command(label=L.t("imp_adif"),command=self._import_adif); tm.add_command(label=L.t("imp_csv"),command=self._import_csv)
@@ -1155,7 +1425,7 @@ class App(tk.Tk):
 
     def _build_btns(self):
         bb=tk.Frame(self,bg=TH["bg"],pady=6); bb.pack(fill="x",padx=10)
-        for txt,cmd,col in [(L.t("settings"),self._settings,TH["warn"]),(L.t("contests"),self._mgr,"#E91E63"),(L.t("stats"),self._stats,"#3F51B5"),(L.t("validate"),self._validate,TH["ok"]),(L.t("export"),self._export_dlg,"#9C27B0"),(L.t("import_log"),self._import_menu,"#FF5722"),(L.t("undo"),self._undo,"#795548"),(L.t("backup"),self._bak,"#607D8B"),(L.t("search"),self._search_dlg,"#00796B"),(L.t("timer"),self._timer_dlg,"#004D40")]:
+        for txt,cmd,col in [(L.t("settings"),self._settings,TH["warn"]),(L.t("contests"),self._mgr,"#E91E63"),("📝 Log Nou",self._new_log_dlg,"#2e7d32"),("🎨 Teme",self._theme_dlg,"#6a1b9a"),(L.t("stats"),self._stats,"#3F51B5"),(L.t("validate"),self._validate,TH["ok"]),(L.t("export"),self._export_dlg,"#9C27B0"),(L.t("import_log"),self._import_menu,"#FF5722"),(L.t("undo"),self._undo,"#795548"),(L.t("backup"),self._bak,"#607D8B"),(L.t("search"),self._search_dlg,"#00796B"),(L.t("timer"),self._timer_dlg,"#004D40")]:
             tk.Button(bb,text=txt,command=cmd,bg=col,fg="white",font=("Consolas",10),width=11).pack(side="left",padx=2)
 
     def _refresh(self):
