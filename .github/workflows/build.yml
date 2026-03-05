@@ -28,20 +28,7 @@ jobs:
           pip install pyinstaller-hooks-contrib
 
       - name: Build EXE with PyInstaller
-        run: |
-          pyinstaller --onefile ^
-            --windowed ^
-            --name "YO_Log_PRO_v16.5" ^
-            --icon "icon.ico" ^
-            --add-data "contests.json;." ^
-            yo_log_pro.py
-        shell: cmd
-        continue-on-error: false
-
-      - name: Build EXE (fallback fara icon/date)
-        if: failure()
-        run: |
-          pyinstaller --onefile --windowed --name "YO_Log_PRO_v16.5" yo_log_pro.py
+        run: pyinstaller --onefile --windowed --name "YO_Log_PRO_v16.5" --icon "icon.ico" --add-data "contests.json;." --add-data "config.json;." yo_log_pro.py
         shell: cmd
 
       - name: Upload EXE artifact
