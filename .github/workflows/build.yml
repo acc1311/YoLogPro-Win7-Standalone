@@ -13,11 +13,11 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Python 3.8 este ULTIMA versiune compatibila cu Windows 7
       - name: Setup Python 3.8 (Windows 7 compatible)
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.8.10'
 
@@ -45,7 +45,7 @@ jobs:
         shell: cmd
 
       - name: Upload EXE artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: YO_Log_PRO_Windows7_Compatible
           path: dist/YO_Log_PRO_v16.5.exe
@@ -53,7 +53,7 @@ jobs:
 
       - name: Create Release (doar pe push la main)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v16.5-${{ github.run_number }}
           name: "YO Log PRO v16.5 (Windows 7 Compatible)"
