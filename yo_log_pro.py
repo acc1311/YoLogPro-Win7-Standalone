@@ -812,42 +812,105 @@ class SearchDialog(tk.Toplevel):
 
 class TimerDialog(tk.Toplevel):
     def __init__(self,parent):
-        super().__init__(parent); self.title(L.t("timer_t")); self.geometry("300x220"); self.configure(bg=TH["bg"]); self.transient(parent)
+        super().__init__(parent); self.title(L.t("timer_t")); self.geometry("340x310"); self.configure(bg=TH["bg"]); self.transient(parent)
         self._running=False; self._end_time=None; self._duration=0; self._elapsed_start=None; self._elapsed_secs=0
-        lo={"bg":TH["bg"],"fg":TH["fg"],"font":("Consolas",11)}; eo={"bg":TH["entry_bg"],"fg":TH["fg"],"font":("Consolas",11),"justify":"center","insertbackground":TH["fg"]}
-        tk.Label(self,text=L.t("dur_h"),**lo).pack(pady=(15,0)); self._dur_e=tk.Entry(self,width=10,**eo); self._dur_e.insert(0,"4"); self._dur_e.pack(pady=4)
-        self._time_lbl=tk.Label(self,text="00:00:00",bg=TH["bg"],fg=TH["gold"],font=("Consolas",28,"bold")); self._time_lbl.pack(pady=10)
-        self._rem_lbl=tk.Label(self,text="",**lo); self._rem_lbl.pack()
-        bf=tk.Frame(self,bg=TH["bg"]); bf.pack(pady=8)
-        self._start_btn=tk.Button(bf,text=L.t("timer_start"),command=self._start,bg=TH["ok"],fg="white",font=("Consolas",11),width=8); self._start_btn.pack(side="left",padx=4)
-        tk.Button(bf,text=L.t("timer_reset"),command=self._reset,bg=TH["warn"],fg="white",font=("Consolas",11),width=8).pack(side="left",padx=4)
+        self._alerted_5=False; self._alerted_1=False; self._alerted_end=False
+        lo={"bg":TH["bg"],"fg":TH["fg"],"font":("Consolas",11)}
+        eo={"bg":TH["entry_bg"],"fg":TH["fg"],"font":("Consolas",13),"justify":"center","insertbackground":TH["fg"]}
+
+        # --- Durata ---
+        df=tk.Frame(self,bg=TH["bg"]); df.pack(pady=(14,2))
+        tk.Label(df,text="Durată /",**lo).pack(side="left",padx=(10,4))
+        tk.Label(df,text="Duration:",**lo).pack(side="left",padx=(0,6))
+        self._dur_e=tk.Entry(df,width=6,**eo); self._dur_e.insert(0,"4"); self._dur_e.pack(side="left",padx=4)
+
+        # --- Selector ore / minute ---
+        self._unit_v=tk.StringVar(value="ore / hours")
+        uf=tk.Frame(self,bg=TH["bg"]); uf.pack(pady=2)
+        for lbl in ["ore / hours","minute / minutes"]:
+            tk.Radiobutton(uf,text=lbl,variable=self._unit_v,value=lbl,
+                bg=TH["bg"],fg=TH["fg"],selectcolor=TH["entry_bg"],
+                activebackground=TH["bg"],font=("Consolas",10)).pack(side="left",padx=8)
+
+        # --- Sunet activat ---
+        self._sound_v=tk.BooleanVar(value=True)
+        tk.Checkbutton(self,text="🔔 Sunete / Sounds (5min, 1min, final)",
+            variable=self._sound_v,bg=TH["bg"],fg=TH["fg"],
+            selectcolor=TH["entry_bg"],activebackground=TH["bg"],
+            font=("Consolas",10)).pack(pady=4)
+
+        # --- Afișaj principal ---
+        self._time_lbl=tk.Label(self,text="00:00:00",bg=TH["bg"],fg=TH["gold"],font=("Consolas",32,"bold")); self._time_lbl.pack(pady=6)
+        self._rem_lbl=tk.Label(self,text="",bg=TH["bg"],fg=TH["fg"],font=("Consolas",11)); self._rem_lbl.pack()
+        self._alert_lbl=tk.Label(self,text="",bg=TH["bg"],fg=TH["warn"],font=("Consolas",11,"bold")); self._alert_lbl.pack()
+
+        # --- Butoane ---
+        bf=tk.Frame(self,bg=TH["bg"]); bf.pack(pady=10)
+        self._start_btn=tk.Button(bf,text=L.t("timer_start"),command=self._start,bg=TH["ok"],fg="white",font=("Consolas",11,"bold"),width=9); self._start_btn.pack(side="left",padx=5)
+        tk.Button(bf,text=L.t("timer_reset"),command=self._reset,bg=TH["warn"],fg="white",font=("Consolas",11),width=9).pack(side="left",padx=5)
+
         self._tick(); center_dialog(self,parent)
+
     def _start(self):
-        if self._running: self._running=False; self._start_btn.config(text=L.t("timer_start"),bg=TH["ok"])
+        if self._running:
+            self._running=False; self._start_btn.config(text=L.t("timer_start"),bg=TH["ok"])
         else:
-            try: self._duration=int(float(self._dur_e.get())*3600)
-            except: self._duration=0
-            self._running=True; self._elapsed_start=datetime.datetime.utcnow()
-            if self._duration>0: self._end_time=self._elapsed_start+datetime.timedelta(seconds=self._duration)
+            try: val=float(self._dur_e.get())
+            except: val=0
+            if "minute" in self._unit_v.get(): self._duration=int(val*60)
+            else: self._duration=int(val*3600)
+            if self._duration<=0: return
+            self._running=True; self._alerted_5=False; self._alerted_1=False; self._alerted_end=False
+            self._alert_lbl.config(text="")
+            self._elapsed_start=datetime.datetime.utcnow()
+            self._end_time=self._elapsed_start+datetime.timedelta(seconds=self._duration)
             self._start_btn.config(text=L.t("timer_stop"),bg=TH["err"])
+
     def _reset(self):
         self._running=False; self._elapsed_secs=0; self._end_time=None; self._elapsed_start=None
-        self._time_lbl.config(text="00:00:00",fg=TH["gold"]); self._rem_lbl.config(text=""); self._start_btn.config(text=L.t("timer_start"),bg=TH["ok"])
+        self._alerted_5=False; self._alerted_1=False; self._alerted_end=False
+        self._time_lbl.config(text="00:00:00",fg=TH["gold"])
+        self._rem_lbl.config(text=""); self._alert_lbl.config(text="")
+        self._start_btn.config(text=L.t("timer_start"),bg=TH["ok"])
+
+    def _do_beep(self,kind):
+        if self._sound_v.get(): beep(kind)
+
     def _tick(self):
         try:
             if not self.winfo_exists(): return
         except: return
         if self._running and self._elapsed_start:
-            now=datetime.datetime.utcnow(); elapsed=int((now-self._elapsed_start).total_seconds())+self._elapsed_secs
+            now=datetime.datetime.utcnow()
+            elapsed=int((now-self._elapsed_start).total_seconds())+self._elapsed_secs
             h,rem=divmod(elapsed,3600); m,s=divmod(rem,60)
             try:
                 self._time_lbl.config(text=f"{h:02d}:{m:02d}:{s:02d}")
                 if self._end_time:
                     remaining=int((self._end_time-now).total_seconds())
-                    if remaining<=0: self._running=False; self._time_lbl.config(fg=TH["err"]); self._rem_lbl.config(text="⏰ TIME UP!",fg=TH["err"]); beep("error")
+                    if remaining<=0:
+                        if not self._alerted_end:
+                            self._alerted_end=True
+                            self._do_beep("error"); self.after(800,lambda:self._do_beep("error")); self.after(1600,lambda:self._do_beep("error"))
+                        self._running=False
+                        self._time_lbl.config(fg=TH["err"])
+                        self._rem_lbl.config(text="")
+                        self._alert_lbl.config(text="⏰ TIME UP! / TIMP EXPIRAT!",fg=TH["err"])
+                        self._start_btn.config(text=L.t("timer_start"),bg=TH["ok"])
                     else:
                         rh,rr=divmod(remaining,3600); rm,rs=divmod(rr,60)
-                        self._rem_lbl.config(text=f"{L.t('remaining')} {rh:02d}:{rm:02d}:{rs:02d}",fg=TH["warn"] if remaining<300 else TH["fg"])
+                        # Alertă 5 minute
+                        if remaining<=300 and not self._alerted_5:
+                            self._alerted_5=True
+                            self._do_beep("warning"); self.after(600,lambda:self._do_beep("warning"))
+                            self._alert_lbl.config(text="⚠ 5 minute rămase! / 5 min left!",fg=TH["warn"])
+                        # Alertă 1 minut
+                        elif remaining<=60 and not self._alerted_1:
+                            self._alerted_1=True
+                            self._do_beep("warning"); self.after(500,lambda:self._do_beep("warning")); self.after(1000,lambda:self._do_beep("warning"))
+                            self._alert_lbl.config(text="⚠ 1 MINUT RĂMAS! / 1 MIN LEFT!",fg=TH["err"])
+                        color=TH["err"] if remaining<=60 else TH["warn"] if remaining<=300 else TH["fg"]
+                        self._rem_lbl.config(text=f"{L.t('remaining')} {rh:02d}:{rm:02d}:{rs:02d}",fg=color)
             except: return
         try: self.after(1000,self._tick)
         except: pass
