@@ -1,22 +1,16 @@
 # 📻 YO Log PRO v16.5 FINAL — Professional Multi-Contest Amateur Radio Logger
 
-## ✅ Windows 7 / 8 / 10 / 11 Compatible
+### 🖥️ Windows 7 / 8 / 10 / 11 Compatible
 
 ---
 
-### 🇷🇴 DESPRE ACEASTĂ VERSIUNE
+## 📥 Descărcare / Download
 
-Această versiune este **identică** cu versiunea Windows 10/11, dar construită cu **Python 3.8** pentru compatibilitate maximă cu sistemele mai vechi.
+Mergi la [**Releases**](../../releases) și descarcă `YO_Log_PRO_v16.5.exe`
 
-> ✅ **Dacă e eroare DLL: instalați [vcredist\_x64.exe](https://aka.ms/vs/17/release/vc_redist.x64.exe)**
-
----
-
-### 🇬🇧 ABOUT THIS VERSION
-
-This version is **identical** to the Windows 10/11 version, but built with **Python 3.8** for maximum compatibility with older systems.
-
-> ✅ **If DLL error: install [vcredist\_x64.exe](https://aka.ms/vs/17/release/vc_redist.x64.exe)**
+> ✅ **Nu necesită instalare Python** — executabil standalone  
+> ✅ **Construit cu Python 3.8 — compatibil Windows 7 SP1+**  
+> ✅ **Dacă apare eroare DLL: instalează [vcredist\_x64.exe](https://aka.ms/vs/17/release/vc_redist.x64.exe)**
 
 ---
 
@@ -29,61 +23,73 @@ This version is **identical** to the Windows 10/11 version, but built with **Pyt
 | Windows 10 | ✅ |
 | Windows 11 | ✅ |
 
-> **🇷🇴** Construit cu Python 3.8.10 — ultima versiune compatibilă cu Windows 7
->
-> **🇬🇧** Built with Python 3.8.10 — the last version compatible with Windows 7
+> **Construit cu Python 3.8.10** — ultima versiune oficială compatibilă cu Windows 7.  
+> Dacă EXE-ul afișează *"This app can't run on your PC"* pe Win7, înseamnă că a fost construit cu Python 3.9+. Folosește această versiune! ✅
 
 ---
 
-## 🆕 ACTUALIZĂRI v16.5 / UPDATES v16.5
+## 🆕 NOU ÎN ACEASTĂ VERSIUNE / NEW IN THIS VERSION
 
-### 🇷🇴 REZOLVĂRI MAJORE:
+### ⏱ Timer Concurs Îmbunătățit
 
-* ✅ **REZOLVAT:** Frecvența, banda, modul și RST **persistă între QSO-uri**
-* ✅ **REZOLVAT:** Doar indicativul și nota se șterg după logare
-* ✅ **ÎMBUNĂTĂȚIT:** Fluxul de operare este acum **mult mai rapid** — nu mai trebuie să setați banda/modul/RST la fiecare QSO
-* ✅ **NOU:** Buton **Reset** complet separat pentru ștergere totală câmpuri
+* ✅ **Durata în ore SAU minute** — selectezi cu buton radio înainte de start
+* ✅ **Avertizare sonoră la 5 minute rămase** — 2 beep-uri (galben)
+* ✅ **Avertizare sonoră la 1 minut rămas** — 3 beep-uri rapide (roșu)
+* ✅ **Beep triplu la TIME UP / final** — mesaj roșu pe ecran
+* ✅ **Checkbox activare/dezactivare sunete** timer independent
+* ✅ Culoarea timpului rămas se schimbă: alb → galben (5min) → roșu (1min)
 
-**ÎMBUNĂTĂȚIRI CABRILLO 2.0 (v16.4 → v16.5):**
+### 📝 Log Nou
 
-* ✅ **ADĂUGAT:** Export Cabrillo 2.0 cu dialog configurare exchange
-* ✅ **ADĂUGAT:** Opțiuni exchange TRIMIS: Județ/Locator/Serial/Nimic
-* ✅ **ADĂUGAT:** Opțiuni exchange PRIMIT: Din log (notă/serial)/Nimic
-* ✅ **ADĂUGAT:** Dialog previzualizare înainte de export
-* ✅ **ADĂUGAT:** Import Cabrillo 2.0 și 3.0
-* ✅ **ADĂUGAT:** Câmp `cabrillo_name` în editor concurs
-* ✅ **ADĂUGAT:** Câmp `exchange_format` per concurs
-* ✅ **ADĂUGAT:** Câmpuri Email și Soapbox în setări
-* ✅ **ADĂUGAT:** Validare + backup automat înainte de export
-* ✅ **ADĂUGAT:** Dialog salvare fișier pentru toate exporturile
+* ✅ **Creare log nou cu nume personalizat** — păstrează logurile vechi
+* ✅ Alegi concursul din listă
+* ✅ Dai un nume (implicit data curentă: `20260305`)
+* ✅ **Logul curent se salvează automat** înainte de a crea unul nou
+* ✅ Accesibil din meniu `📝 Log` și buton din bara jos
 
----
+### 🎨 Teme și Culori
 
-### 🇬🇧 MAJOR FIXES:
+* ✅ **6 teme predefinite:**
 
-* ✅ **FIXED:** Frequency, band, mode and RST **persist between QSOs**
-* ✅ **FIXED:** Only callsign and note clear after logging
-* ✅ **IMPROVED:** Operating flow is now **much faster** — no need to set band/mode/RST for every QSO
-* ✅ **NEW:** Separate **Reset** button for full field clearing
+| Temă | Stil |
+|------|------|
+| Dark Blue (implicit) | Negru + albastru — tema originală |
+| Dark Green | Negru + verde |
+| Dark Red | Negru + roșu |
+| Dark Purple | Negru + violet |
+| Light (Zi) | Alb + albastru — pentru lumină puternică |
+| Light Sepia | Crem + maro — odihnitor pentru ochi |
 
-**CABRILLO 2.0 IMPROVEMENTS (v16.4 → v16.5):**
-
-* ✅ **ADDED:** Cabrillo 2.0 export with exchange configuration dialog
-* ✅ **ADDED:** Exchange SENT options: County/Locator/Serial/None
-* ✅ **ADDED:** Exchange RECEIVED options: From log (note/serial)/None
-* ✅ **ADDED:** Preview dialog before export
-* ✅ **ADDED:** Import Cabrillo 2.0 and 3.0
-* ✅ **ADDED:** `cabrillo_name` field in contest editor
-* ✅ **ADDED:** `exchange_format` field per contest
-* ✅ **ADDED:** Email and Soapbox fields in settings
-* ✅ **ADDED:** Validation + auto-backup before export
-* ✅ **ADDED:** Save file dialog for all exports
+* ✅ **Editor culori custom** — dublu-click pe orice culoare pentru color picker
+* ✅ **Preview live** înainte să aplici tema
+* ✅ Tema se **salvează automat** și se încarcă la fiecare pornire
+* ✅ Accesibil din meniu `📝 Log` și buton din bara jos
 
 ---
 
-## 📋 FLUX DE OPERARE / OPERATING FLOW
+## 💾 BACKUP AUTOMAT / AUTO BACKUP
 
-### 🇷🇴 Flux Rapid v16.5
+| Eveniment | Când |
+|-----------|------|
+| **Autosave** log curent | La fiecare **60 secunde** |
+| La **ieșirea din program** | La fiecare închidere |
+| Înainte de orice **export** | Cabrillo, ADIF, EDI, CSV |
+| La **golirea logului** | Înainte de ștergere |
+
+**Locație backup:**
+```
+📁 folderul programului\
+└── backups\
+    ├── log_simplu_20260305_143022.json
+    ├── log_simplu_20260305_150011.json
+    └── ... (maxim 50 per concurs)
+```
+
+---
+
+## 📋 FUNCȚIONALITĂȚI COMPLETE / FULL FEATURES
+
+### 🇷🇴 Operare rapidă v16.5
 
 ```
 PRIMUL QSO:
@@ -102,7 +108,7 @@ SCHIMBAȚI BANDA/MODUL:
 - F3 = mod următor (RST se ajustează automat)
 
 RESETARE COMPLETĂ:
-- [Reset] → șterge TOATE câmpurile (freq, bandă, mod, RST)
+- [Reset] → șterge TOATE câmpurile
 ```
 
 ### 🇬🇧 Quick Flow v16.5
@@ -124,72 +130,68 @@ CHANGE BAND/MODE:
 - F3 = next mode (RST auto-adjusts)
 
 FULL RESET:
-- [Reset] → clears ALL fields (freq, band, mode, RST)
+- [Reset] → clears ALL fields
 ```
 
 ---
 
-## 📤 EXPORT CABRILLO 2.0 — GHID COMPLET
+## 📤 EXPORTURI DISPONIBILE / AVAILABLE EXPORTS
 
-### 🇷🇴 Configurare Exchange
+| Format | Descriere |
+|--------|-----------|
+| **Cabrillo 3.0** (.log) | Standard internațional |
+| **Cabrillo 2.0** (.log) | Cu dialog configurare exchange |
+| **ADIF 3.1** (.adi) | Universal, import în orice logger |
+| **CSV** (.csv) | Excel, foi de calcul |
+| **EDI / REG1TEST** (.edi) | Concursuri VHF/UHF europene |
+| **Print** (.txt) | Raport text formatat |
 
-**PASUL 1:** Click `[📤 Export]` → `Cabrillo 2.0 (.log)`
+### Exchange Cabrillo 2.0
 
-**PASUL 2:** Dialog configurare exchange:
-
-| Exchange TRIMIS | Ce trimiteți | Exemplu |
-|----------------|--------------|---------|
-| **Județ** | Județ din setări | `NT` |
-| **Locator** | Locator din setări | `KN37` |
-| **Nr. Serial** | Din coloana Nr S | `001` |
-| **Nimic** | `--` | `--` |
-
-| Exchange PRIMIT | Ce primiți | Exemplu |
-|----------------|------------|---------|
-| **Din log** | Notă sau Nr R din log | `BV` sau `045` |
-| **Nimic** | `--` | `--` |
-
-**PASUL 3:** Click `[📤 Exportă]` → previzualizare
-
-**PASUL 4:** Click `[Salvează]` → alegeți locația
+| Exchange TRIMIS | Exemplu |
+|----------------|---------|
+| Județ din setări | `NT` |
+| Locator din setări | `KN37` |
+| Nr. Serial | `001` |
+| Nimic | `--` |
 
 ---
 
-### 🇬🇧 Cabrillo 2.0 Exchange Configuration
+## 📥 IMPORTURI DISPONIBILE / AVAILABLE IMPORTS
 
-**STEP 1:** Click `[📤 Export]` → `Cabrillo 2.0 (.log)`
-
-**STEP 2:** Exchange configuration dialog:
-
-| Exchange SENT | What you send | Example |
-|---------------|---------------|---------|
-| **County** | County from settings | `NT` |
-| **Locator** | Locator from settings | `KN37` |
-| **Serial Nr.** | From Nr S column | `001` |
-| **None** | `--` | `--` |
-
-| Exchange RECEIVED | What you receive | Example |
-|-------------------|-----------------|---------|
-| **From log** | Note or Nr R from log | `BV` or `045` |
-| **None** | `--` | `--` |
-
-**STEP 3:** Click `[📤 Export]` → preview
-
-**STEP 4:** Click `[Save]` → choose location
+* ✅ **ADIF** (.adi / .adif)
+* ✅ **CSV** (.csv)
+* ✅ **Cabrillo 2.0** (.log)
+* ✅ **Cabrillo 3.0** (.log)
 
 ---
 
-## 🆚 COMPARAȚIE VERSIUNI / VERSION COMPARISON
+## ⚙️ SETĂRI / SETTINGS
 
-| Funcționalitate | v16.2 | v16.4 | **v16.5** |
-|----------------|-------|-------|-----------|
-| **Persistență câmpuri** | ❌ Tot se șterge | ❌ Tot se șterge | ✅ **Freq/Band/Mode/RST persistă** |
-| **Export Cabrillo 2.0** | ❌ | ✅ | ✅ **+ Exchange configurabil** |
-| **Import Cabrillo** | ❌ | ✅ 3.0 only | ✅ **2.0 + 3.0** |
-| **Preview export** | ❌ | ❌ | ✅ **Toate exporturile** |
-| **Validare pre-export** | ❌ | ❌ | ✅ **Automat + backup** |
-| **Email/Soapbox** | ❌ | ❌ | ✅ **În setări** |
-| **Compatibil Win7** | ❌ | ❌ | ✅ **DA!** |
+| Câmp | Descriere |
+|------|-----------|
+| Indicativ | Call-sign-ul tău |
+| Locator | Maidenhead (ex: KN37) |
+| Județ | Codul județului (ex: NT) |
+| Operator | Numele operatorului |
+| Putere | Wați (pentru Cabrillo) |
+| Email | Pentru header Cabrillo |
+| Soapbox | Comentarii concurs |
+| Font | Dimensiunea fontului (9-16) |
+| Sunete | Activare/dezactivare beep |
+
+---
+
+## 🔧 TASTE RAPIDE / KEYBOARD SHORTCUTS
+
+| Tastă | Acțiune |
+|-------|---------|
+| **Enter** | LOG QSO |
+| **F2** | Bandă următoare |
+| **F3** | Mod următor |
+| **Ctrl+S** | Salvare forțată |
+| **Ctrl+Z** | Undo ultimul QSO |
+| **Ctrl+F** | Căutare în log |
 
 ---
 
@@ -197,61 +199,63 @@ FULL RESET:
 
 | Problemă | Cauză | Soluție |
 |----------|-------|---------|
-| Banda nu se schimbă cu F2 | Concursul are o singură bandă | Normal — verificați concursul |
-| RST nu se schimbă cu F3 | RST manual setat | Apăsați F3 din nou pentru auto-RST |
-| Exchange dialog gol | Județ/Locator nesetat | [⚙ Setări] → Completați |
-| Preview nu apare | Pop-up blocat | Verificați taskbar |
-| Import Cabrillo eșuat | Format invalid | Verificați că e Cabrillo 2.0 sau 3.0 |
-| Eroare DLL pe Win7 | Visual C++ lipsă | Instalați vcredist_x64.exe |
-| „This app can't run" | EXE construit cu Python 3.9+ | Folosiți această versiune ✅ |
+| „This app can't run on your PC" | EXE construit cu Python 3.9+ | Folosește această versiune ✅ |
+| Eroare DLL la pornire | Visual C++ lipsă | Instalează vcredist_x64.exe |
+| Banda nu se schimbă cu F2 | Concursul are o singură bandă | Normal |
+| Exchange dialog gol | Județ/Locator nesetat | ⚙ Setări → Completează |
+| Preview nu apare | Pop-up blocat | Verifică taskbar |
+| Timer nu sună | Sunete dezactivate | Bifează checkbox în timer |
 
 ---
 
-## 📜 CHANGELOG COMPLET / COMPLETE CHANGELOG
+## 🔨 DE CE PYTHON 3.8?
+
+Python **3.9 și versiunile mai noi** nu mai suportă Windows 7.  
+Python **3.8** este ultima versiune oficială compatibilă cu Windows 7 SP1.
+
+Dacă folosești Python 3.9+ pentru build, executabilul va afișa eroarea *"This app can't run on your PC"* pe Windows 7.
+
+---
+
+## 📜 CHANGELOG
 
 ### v16.5 FINAL
-* ✅ Freq/Band/Mode/RST persist between QSOs (only call+note clear)
-* ✅ Separate Reset button for full clearing
-* ✅ **Construit cu Python 3.8 — compatibil Windows 7!**
+* ✅ **NOU:** Timer cu ore/minute și avertizări sonore (5min, 1min, final)
+* ✅ **NOU:** Log Nou cu nume personalizat
+* ✅ **NOU:** 6 teme predefinite + editor culori custom
+* ✅ **FIX:** Freq/Band/Mode/RST persistă între QSO-uri
+* ✅ **NOU:** Buton Reset separat pentru ștergere completă
+* ✅ **NOU:** Compatibil Windows 7 SP1+ (Python 3.8)
 
 ### v16.4 FINAL
-* ✅ Cabrillo 2.0 export with exchange dialog
-* ✅ Import Cabrillo 2.0 and 3.0
-* ✅ Preview dialog for all exports
-* ✅ Email and Soapbox fields
-* ✅ Validation + auto-backup before export
+* ✅ Export Cabrillo 2.0 cu dialog exchange configurabil
+* ✅ Import Cabrillo 2.0 și 3.0
+* ✅ Preview dialog pentru toate exporturile
+* ✅ Câmpuri Email și Soapbox în setări
+* ✅ Validare + backup automat înainte de export
 
 ### v16.2 FINAL
-* ✅ Contest manager improvements
-* ✅ Statistics window
-* ✅ ADIF/EDI export
+* ✅ Manager concursuri complet
+* ✅ Fereastră statistici
+* ✅ Export ADIF/EDI
+* ✅ Toate dialogurile centrate
 
 ---
 
-## 📞 CONTACT ȘI SUPORT / CONTACT AND SUPPORT
+## 📞 CONTACT
 
 | | |
 |---|---|
-| **Dezvoltator / Developer** | Ardei Constantin-Cătălin |
-| **Indicativ / Callsign** | **YO8ACR** |
+| **Dezvoltator** | Ardei Constantin-Cătălin |
+| **Indicativ** | **YO8ACR** |
 | **Email** | yo8acr@gmail.com |
-| **Versiune / Version** | **16.5 FINAL** |
+| **Versiune** | 16.5 FINAL |
 | **Python build** | **3.8.10 (Windows 7 compatible)** |
 
 ---
 
 **🎯 REMEMBER:**
-* **F2** = Bandă următoare / Next band
-* **F3** = Mod următor / Next mode
-* **Enter** = LOG QSO
-* **[Reset]** = Ștergere completă / Full clear
-* **Ctrl+S** = Salvare forțată / Force save
+`F2` = Bandă · `F3` = Mod · `Enter` = LOG · `[Reset]` = Ștergere · `Ctrl+S` = Save
 
----
-
-**73 de YO8ACR! 📻**
-
-*🇷🇴 „v16.5 — Acum și pe Windows 7!"*  
-*🇬🇧 "v16.5 — Now also on Windows 7!"*
-
-**YO Log PRO v16.5 FINAL — Compatible with ALL Windows versions**
+**73 de YO8ACR! 📻**  
+*"v16.5 — Acum și pe Windows 7, 8, 10, 11!"*
